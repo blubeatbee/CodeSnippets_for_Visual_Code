@@ -16,7 +16,7 @@
 </ul>
 
 <h2>Download guide</h2>
-![Download guide picture. Located inside images/ folder.](https://github.com/blubeatbee/CodeSnippets_for_Visual_Code/blob/main/images/downloadguide.png?raw=true)
+[Download guide picture. Located inside images/ folder.](https://github.com/blubeatbee/CodeSnippets_for_Visual_Code/blob/main/images/downloadguide.png?raw=true)
 <p>Step-by-step Windows guide for downloading this whole repo into your "My Code Snippets" directory. By default, this folder is where you store and use code snippets in Visual Studio.</p>
 <ol>
 	<li>
