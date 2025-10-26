@@ -16,8 +16,9 @@
 </ul>
 
 <h2>Download guide</h2>
-<img source="https://github.com/blubeatbee/CodeSnippets_for_Visual_Code/blob/main/images/downloadguide.png?raw=true" alt="Download guide picture. Located inside images/ folder.">
-<p>Step-by-step Windows guide for downloading this whole repo into your "My Code Snippets" directory. By default, this folder is where you store and use code snippets in Visual Studio.</p>
+<img src="https://github.com/blubeatbee/CodeSnippets_for_Visual_Code/blob/main/images/downloadguide.png?raw=true" alt="Download guide picture. Located inside images/ folder." 
+style="max-width:420px; width:100%; height:auto;">
+<p>Step-by-step Windows guide for downloading this repo into your "My Code Snippets" directory. By default, this folder is where you store and use code snippets in Visual Studio.</p>
 <ol>
 	<li>
 		Click the big coloured button labelled "<b>&lt;&gt; Code 🞃</b>", and then click "<b>Download ZIP</b>" at the bottom of the popup window.
