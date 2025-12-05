@@ -28,18 +28,17 @@ style="max-width:100%; height:auto;">
 	</li>
 	<li>
 		Right-click the ZIP folder and press "<b>Extract...</b>" which will open the extract menu. Now click "<b>Browse...</b>" and extract your folder to this filepath:<br><br>
-		C:\Users\<i><span style="opacity:0.7">%USERPROFILE%</span></i>\Documents\Visual Studio <i><span style="opacity:0.7">2022</span></i>\Code Snippets\Visual C#\ 
-		<br>
-		<br>
+		C:\Users\<i>%USERPROFILE%</i>\Documents\Visual Studio <i>2022</i>\Code Snippets\Visual C#\ 
 		<ul style="list-style:none">
 			<li>
-				<i><span style="opacity:0.7">%USERPROFILE%</span></i> = Your user name.
+				<i>%USERPROFILE%</i> = Your computer's username.
 			</li>
 			<li>
-				<i><span style="opacity:0.7">2022</span></i> = Your Visual Studio release version. Can be changed if you use a different one.
+				<i>2022</i> = Your Visual Studio release version. Can be changed if you use a different one.
 			</li>
 		</ul>
 	</li>
+	<br>
 	<li>
 		Go to <i>Documents\Visual Studio 2022\Code Snippets\Visual C#\</i> and now you should see the extracted folder right next to "<b>My Code Snippets</b>". Now you can either:
 		<ol>
