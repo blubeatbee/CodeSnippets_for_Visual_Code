@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">	
+	
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>irepositorybase</Title>
+			<Shortcut>irepobase</Shortcut>
+			<Description>Code snippet for a generic repository interface with basic CRUD methods.</Description>
+			<Author>BluBeatBee</Author>
+			<SnippetTypes>
+				<SnippetType>Expansion</SnippetType>
+			</SnippetTypes>
+		</Header>
+		<Snippet>
+			<Imports>
+				<Import>
+					<Namespace>System.Linq.Expressions</Namespace>
+				</Import>
+			</Imports>
+			<Code Language="csharp" Kind="file">
+				<![CDATA[
+				/// <summary>
+				/// A repository interface that contains CRUD methods against a generic model class (i.e. the methods will work with any database table).<br /><br />
+				/// If non-generic repository interfaces are needed, make sure they also inherit this interface.<br /><br />
+				/// For an in-depth explanation, see <see href="https://www.youtube.com/watch?v=rtXpYpZdOzM">Mosh's Repository Pattern Done Right</see>.
+				/// </summary>
+				/// <typeparam name="TModel">A generic model class that can represent any table row in the database.</typeparam>
+				public interface IRepository<TModel> where TModel : class
+				{
+					Task<TModel?> FindByIdAsync(object id);
+
+					Task<IEnumerable<TModel>> GetAllAsync();
+
+					Task<IEnumerable<TModel>> FindByFilterAsync(
+						Expression<Func<TModel, bool>>? filter = null,
+						Func<IQueryable<TModel>, IOrderedQueryable<TModel>>? orderBy = null,
+						params string[]? includeNavProperties);
+
+					void Add(TModel model);
+
+					void Remove(TModel model);
+
+					void Update(TModel model);
+				}]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>repositorybase</Title>
+			<Shortcut>repobase</Shortcut>
+			<Description>Code snippet for a base repository class that implements the generic repository interface.</Description>
+			<Author>BluBeatBee</Author>
+			<SnippetTypes>
+				<SnippetType>Expansion</SnippetType>
+			</SnippetTypes>
+		</Header>
+		<Snippet>
+			<Imports>
+				<Import>
+					<Namespace>Microsoft.AspNetCore.Identity.EntityFrameworkCore</Namespace>
+				</Import>
+				<Import>
+					<Namespace>Microsoft.EntityFrameworkCore</Namespace>
+				</Import>
+				<Import>
+					<Namespace>System.Data</Namespace>
+				</Import>
+				<Import>
+					<Namespace>System.Linq.Expressions</Namespace>
+				</Import>
+			</Imports>
+			<Code Language="csharp" Kind="file">
+				<![CDATA[
+				/// <summary>
+				/// The class implementation of the generic repository interface.<br /><br />
+				/// If non-generic repositories are needed, make sure they also inherit this class. 
+				/// This allows non-generic repositories to have basic CRUD methods and avoids code repetition.<br /><br />
+				/// For an in-depth explanation, see <see href="https://www.youtube.com/watch?v=rtXpYpZdOzM">Mosh's Repository Pattern Done Right</see>.
+				/// </summary>
+				/// <typeparam name="TModel">A generic model class that can represent any table row in the database.</typeparam>
+				public class Repository<TModel> : IRepository<TModel> where TModel : class
+				{
+					private DbSet<TModel> _dbSet;
+					
+					protected DbContext Context { get; private set; }
+
+					public Repository(DbContext context)
+					{
+						ArgumentNullException.ThrowIfNull(context);
+						Context = context;
+						_dbSet = Context.Set<TModel>();
+					}
+
+					public virtual async Task<TModel?> FindByIdAsync(object id)
+					{
+						return await _dbSet.FindAsync(id);
+					}
+
+					public virtual async Task<IEnumerable<TModel>> GetAllAsync()
+					{
+						return await _dbSet.AsNoTracking().ToList();
+					}
+
+					public virtual async Task<IEnumerable<TModel>> FindByFilterAsync(
+						Expression<Func<TModel, bool>>? filter = null,
+						Func<IQueryable<TModel>, IOrderedQueryable<TModel>>? orderBy = null,
+						params string[]? includeNavProperties)
+					{
+						var query = _dbSet.AsQueryable();
+						
+						if (filter != null)
+						{
+							query = query.Where(filter);
+						}
+						
+						if (includeNavProperties != null)
+						{
+							foreach (var navProp in includeNavProperties)
+							{
+								query = query.Include(navProp);
+							}
+						}
+						
+						return (orderBy != null) 
+							? orderBy(query).ToList()
+							: query.ToList();
+					}
+
+					public virtual void Add(TModel model)
+					{
+						_dbSet.Add(model);
+					}
+					
+					public virtual void Remove(TModel model)
+					{
+						if (Context.Entry(model).State == EntityState.Detached)
+						{
+							_dbSet.Attach(model);
+						}
+						_dbSet.Remove(model);
+					}
+
+					public virtual void Update(TModel model)
+					{
+						Context.Set<TModel>().Update(model);
+					}
+				}]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>irepository</Title>
+			<Shortcut>irepo</Shortcut>
+			<Description>Code snippet for a non-generic repository interface.</Description>
+			<Author>BluBeatBee</Author>
+			<SnippetTypes>
+				<SnippetType>Expansion</SnippetType>
+			</SnippetTypes>
+		</Header>
+		<Snippet>
+			<Declarations>
+				<Literal>
+					<ID>IModelRepo</ID>
+					<ToolTip>Replace with the non-generic interface typename.</ToolTip>
+					<Default>IModelRepository</Default>
+				</Literal>
+				<Literal>
+					<ID>Model</ID>
+					<ToolTip>Replace with a specific model class.</ToolTip>
+					<Default>object</Default>
+				</Literal>
+			</Declarations>
+			<Code Language="csharp" Kind="file">
+				<![CDATA[
+				/// <summary>
+				/// A repository interface that contains specialised CRUD methods for a specific model class.<br /><br />
+				/// For an in-depth explanation, see <see href="https://www.youtube.com/watch?v=rtXpYpZdOzM">Mosh's Repository Pattern Done Right</see>.				
+				/// </summary>
+				/// <remarks>
+				/// A non-generic repository should only be created if a specific model class needs CRUD methods which the generic repository does not have.
+				/// </remarks>
+				public interface $IModelRepo$ : IRepository<$Model$>
+				{
+					// This is just an example method. Please replace this.
+					Task<IEnumerable<$Model$>> ExampleMethodAsync(int pageIndex, int pageSize);
+					
+					$end$
+				}]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>repository</Title>
+			<Shortcut>repo</Shortcut>
+			<Description>Code snippet for a repository class that implements the non-generic repository interface.</Description>
+			<Author>BluBeatBee</Author>
+			<SnippetTypes>
+				<SnippetType>Expansion</SnippetType>
+			</SnippetTypes>
+		</Header>
+		<Snippet>
+			<Declarations>
+				<Literal>
+					<ID>ModelRepo</ID>
+					<ToolTip>Replace with the non-generic class typename.</ToolTip>
+					<Default>ModelRepository</Default>
+				</Literal>
+				<Literal>
+					<ID>IModelRepo</ID>
+					<ToolTip>Replace with the non-generic interface typename.</ToolTip>
+					<Default>IModelRepository</Default>
+				</Literal>
+				<Literal>
+					<ID>Model</ID>
+					<ToolTip>Replace with a specific model class.</ToolTip>
+					<Default>object</Default>
+				</Literal>
+				<Literal>
+					<ID>DbContext</ID>
+					<ToolTip>Replace with your DbContext class.</ToolTip>
+					<Default>DerivedDbContext</Default>
+				</Literal>
+			</Declarations>
+			<Code Language="csharp" Kind="file">
+				<![CDATA[
+				/// <summary>
+				/// A repository interface that contains specialised CRUD methods against a specific model class.<br /><br />
+				/// For an in-depth explanation, see <see href="https://www.youtube.com/watch?v=rtXpYpZdOzM">Mosh's Repository Pattern Done Right</see>.				
+				/// </summary>
+				/// <remarks>
+				/// A non-generic repository should only be created if a specific model class needs CRUD methods which are not included in the generic repository.
+				/// </remarks>
+				public class $ModelRepo$ : Repository<$Model$>, $IModelRepo$
+				{
+					public $ModelRepo$($DbContext$ context) : base(context)
+					{
+					}
+					
+					protected new $DbContext$ Context 
+					{
+						get { return ($DbContext$)base.Context; }
+					}
+					
+					// This is just an example method. Please replace this.
+					public async Task<IEnumerable<$Model$>> ExampleMethodAsync(int pageIndex = 1, int pageSize = 10)
+					{
+						// This is just an example method. Replace this.
+						return await Context.Set<$Model$>()
+							.Skip((pageIndex - 1) * pageSize)
+							.Take(pageSize)
+							.ToListAsync();
+					}
+					
+					$end$
+				}]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+
+</CodeSnippets>

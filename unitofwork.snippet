@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">	
+	
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>iunitofwork</Title>
+			<Shortcut>iuow</Shortcut>
+			<Description>Code snippet for Unit of Work pattern interface.</Description>
+			<Author>BluBeatBee</Author>
+			<SnippetTypes>
+				<SnippetType>Expansion</SnippetType>
+			</SnippetTypes>
+		</Header>
+		<Snippet>
+			<Declarations>
+				<Literal>
+					<ID>IRepo</ID>
+					<ToolTip>Replace with a generic or a non-generic repository interface.</ToolTip>
+					<Default>IRepository&lt;object&gt;</Default>
+				</Literal>
+				<Literal>
+					<ID>IRepoName</ID>
+					<ToolTip>Replace with the name of this repository.</ToolTip>
+					<Default>Models</Default>
+				</Literal>
+			</Declarations>
+			<Code Language="csharp" Kind="file">
+				<![CDATA[
+				/// <summary>
+				///	The Unit of Work interface.<br /><br />
+				/// Every generic and non-generic repository must be instanced inside the UnitOfWork class.
+				/// This ensures that every repository use the same DbContext.<br /><br />
+				/// For an in-depth explanation, see <see href="https://www.youtube.com/watch?v=rtXpYpZdOzM">Mosh's Repository Pattern Done Right</see>.
+				/// </summary>
+				public interface IUnitOfWork
+				{
+					public $IRepo$ $IRepoName$ { get; }
+					
+					/// <summary>
+					///	Asynchronously invokes <see cref="DbContext.SaveChangesAsync"/>.<br/><br/>
+					/// Any changes made via this UnitOfWork's repositories before SaveChangesAsync is called will be implicitly treated as one transaction.
+					/// If an exception is thrown during saving, no change will be made to the actual database.
+					/// </summary>
+					/// <return>The number of rows affected.</return>
+					Task<int> SaveChangesAsync();
+				}]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>unitofwork</Title>
+			<Shortcut>uow</Shortcut>
+			<Description>Code snippet for an implemented Unit of Work pattern.</Description>
+			<Author>BluBeatBee</Author>
+			<SnippetTypes>
+				<SnippetType>Expansion</SnippetType>
+			</SnippetTypes>
+		</Header>
+		<Snippet>
+			<Imports>
+				<Import>
+					<Namespace>Microsoft.EntityFrameworkCore</Namespace>
+				</Import>
+			</Imports>
+			<Declarations>
+				<Literal>
+					<ID>DbContext</ID>
+					<ToolTip>Replace with your DbContext class.</ToolTip>
+					<Default>DerivedDbContext</Default>
+				</Literal>
+				<Literal>
+					<ID>IRepo</ID>
+					<ToolTip>Replace with a generic or a non-generic repository interface typename.</ToolTip>
+					<Default>IRepository&lt;object&gt;</Default>
+				</Literal>
+				<Literal>
+					<ID>IRepoName</ID>
+					<ToolTip>Replace with a name that identifies this interface.</ToolTip>
+					<Default>Models</Default>
+				</Literal>
+				<Literal>
+					<ID>Repo</ID>
+					<ToolTip>Replace with the generic or non-generic repository class that implements the interface.</ToolTip>
+					<Default>Repository&lt;object&gt;</Default>
+				</Literal>
+			</Declarations>
+			<Code Language="csharp" Kind="file">
+				<![CDATA[
+				/// <summary>
+				///	Implements the Unit of Work interface.<br /><br />
+				/// Every generic and non-generic repository must be instanced inside the UnitOfWork class.
+				/// This ensures that every repository use the same DbContext.<br /><br />
+				/// For an in-depth explanation, see <see href="https://www.youtube.com/watch?v=rtXpYpZdOzM">Mosh's Repository Pattern Done Right</see>.
+				/// </summary>
+				public sealed class UnitOfWork : IUnitOfWork 
+				{
+					private readonly $DbContext$ _context;
+
+					public UnitOfWork($DbContext$ context)
+					{
+						ArgumentNullException.ThrowIfNull(context);
+						_context = context;
+						$IRepoName$ = new $Repo$(this.context);
+					}
+
+					public $IRepo$ $IRepoName$ { get; private set; }
+
+					public async Task<int> SaveChangesAsync()
+					{
+						return await _context.SaveChangesAsync();
+					}
+				}
+				]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+
+</CodeSnippets>
