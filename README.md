@@ -1,53 +1,38 @@
-<h1>Code Snippets for Visual Studio 2022</h1>
-<p>
-	A collection of various C# code snippets (basically shortcuts) for Visual Studio.
-	<br>
-	Feel free to grab any of them for your own use!
-</p>
-<p>
-	Want to add your own code snippets? Don't be afraid to contact me about it!
-</p>
+# README
 
-<h2>Credits</h2>
-<ul>
-	<li>
-		<a href="https://github.com/emmakarlholm">EmmaKarlholm</a> for sharing cww.snippet with me
-	</li>
-</ul>
+## A Collection of C# Code Snippets
 
-<h2>Download guide</h2>
-<img src="https://github.com/blubeatbee/CodeSnippets_for_Visual_Code/blob/main/images/downloadguide.png?raw=true" alt="Download guide picture. Located inside images/ folder." 
-style="max-width:100%; height:auto;">
-<p>Step-by-step Windows guide for downloading this repo into your "My Code Snippets" directory. By default, this folder is where you store and use code snippets in Visual Studio.</p>
-<ol>
-	<li>
-		Click the big coloured button labelled "<b>&lt;&gt; Code 🞃</b>", and then click "<b>Download ZIP</b>" at the bottom of the popup window.
-	</li>
-	<li>
-		Save the ZIP folder somewhere you can easily reach, for example <b>Desktop</b>, <b>Downloads</b>, etc.
-	</li>
-	<li>
-		Right-click the ZIP folder and press "<b>Extract...</b>" which will open the extract menu. Now click "<b>Browse...</b>" and extract your folder to this filepath:<br><br>
-		C:\Users\<i>%USERPROFILE%</i>\Documents\Visual Studio <i>2022</i>\Code Snippets\Visual C#\ 
-		<ul style="list-style:none">
-			<li>
-				<i>%USERPROFILE%</i> = Your computer's username.
-			</li>
-			<li>
-				<i>2022</i> = Your Visual Studio release version. Can be changed if you use a different one.
-			</li>
-		</ul>
-	</li>
-	<br>
-	<li>
-		Go to <i>Documents\Visual Studio 2022\Code Snippets\Visual C#\</i> and now you should see the extracted folder right next to "<b>My Code Snippets</b>". Now you can either:
-		<ol>
-			<li>
-				Remove the empty "<b>My Code Snippets</b>", and rename the extracted folder to "<b>My Code Snippets</b>".
-			</li>
-			<li>
-				Copy the .snippet files you want inside the extracted folder and paste them inside "<b>My Code Snippets</b>".
-			</li>
-		</ol>
-	</li>
-</ol>
+Contains various custom Code Snippets for the C# programming language.
+
+Code Snippets are small, pre-defined code that can be expanded into larger sets of code, this can reduce the amount of keyboard presses during programming. As an example, the IDE **Visual Studio** has the `cw` code snippet that can expand to `Console.WriteLine()` when inserted by pressing TAB twice.
+
+For more info about Code Snippets, see:
+
+- [Use code snippets in Visual Studio](https://learn.microsoft.com/en-us/visualstudio/ide/code-snippets?view=visualstudio)
+- [Snippets in Visual Studio Code](https://code.visualstudio.com/docs/editing/userdefinedsnippets)
+
+## Authors
+
+- [Emma Karlholm](https://github.com/emmakarlholm) - For giving me the idea to start this collection by sharing the `cww.snippet` with me.
+- [Blubeatbee](https://github.com/blubeatbee) - For writing most of the snippets.
+
+## Download Guide
+
+Step-by-step guide for downloading the `.snippet` files into the Code Snippet folder of your IDE or Code Editor.
+
+![Picture of the download ZIP link on Github.](https://github.com/blubeatbee/CodeSnippets_for_Visual_Code/blob/main/images/downloadguide.png?raw=true)
+
+- Click the button labelled "**&lt;&gt; Code 🞃**".
+- Click "**Download ZIP**" at the bottom of the pop-up window.
+- Save the ZIP in folder like **Downloads**, or **Documents**, etc.
+- Extract all `.snippet` files and move/copy them into your Code Snippet folder.
+    - The path to this folder depends on your chosen code editor. See below.
+       
+### Code Snippet Folder
+
+Visual Studio: 
+- `~/Documents/Visual Studio %VERSION%/Code Snippets/Visual C#/My Code Snippets/`
+
+Visual Studio Code: 
+- `~/Users/%USER%/AppData/Roaming/Code/User/snippets/`
+
